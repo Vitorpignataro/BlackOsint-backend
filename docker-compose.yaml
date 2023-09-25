@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  postgres:
+      image: postgres:13
+      container_name: postgres-bd-repo
+      env_file:
+      - ./config_env/.env.postgreesql
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres-data:/var/lib/postgresql/data/
+      networks:
+        - osintnetwork
+
+  
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - "C:\\Users\\vitor\\Área de Trabalho\\BlackOsint\\BlackOsint-backend:/app"
+    env_file:
+      - ./config_env/.env.backend
+    depends_on:
+      - postgres 
+    networks:
+      - osintnetwork
+
+  
+
+networks:
+  osintnetwork:
+
+volumes:
+  postgres-data:
+    
